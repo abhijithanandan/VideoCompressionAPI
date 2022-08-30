@@ -1,7 +1,7 @@
 import time
 import psycopg2
 
-from fastapi import FastAPI, status
+from fastapi import FastAPI, status, HTTPException
 from fastapi.params import Body
 from pydantic import BaseModel
 from psycopg2.extras import RealDictCursor
@@ -41,6 +41,9 @@ Routes
 async def get_all_users():
     cursor.execute(""" SELECT * FROM public.users """)
     users = cursor.fetchall()
+    if not users:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"no users found on the system")
     return users
 
 
