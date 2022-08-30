@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 """
 Models
@@ -15,6 +15,7 @@ class UserBase(BaseModel):
 
 
 class CreateUser(UserBase):
+    email: EmailStr
     pass
 
 
