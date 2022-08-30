@@ -2,9 +2,19 @@ import time
 import psycopg2
 
 from fastapi import FastAPI, status, HTTPException
-from fastapi.params import Body
 from pydantic import BaseModel
 from psycopg2.extras import RealDictCursor
+from fastapi.params import Body, Depends
+from sqlalchemy.orm import Session
+
+from app import models
+from app.database import engine, get_db
+
+"""
+Setup
+"""
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -70,7 +80,6 @@ def delete_user(id: int):
 
 @app.put("users/{id}")
 def update_user(id: int, user: User):
-
     cursor.execute("""UPDATE users SET name = %s WHERE id = %s RETURNING *""", (user.name, str(id)))
     updated_user = cursor.fetchone()
     conn.commit()
@@ -78,4 +87,4 @@ def update_user(id: int, user: User):
     if updated_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} does not exist")
-    return {"data": updated_user }
+    return {"data": updated_user}
