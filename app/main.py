@@ -5,6 +5,7 @@ from fastapi import FastAPI, status, HTTPException
 from psycopg2.extras import RealDictCursor
 from fastapi.params import Body, Depends
 from sqlalchemy.orm import Session
+from typing import List
 
 from app import models
 from app import schemas
@@ -38,7 +39,7 @@ Routes
 """
 
 
-@app.get("/users")
+@app.get("/users", response_model=List[schemas.UserResponse])
 async def get_all_users(db: Session = Depends(get_db)):
 
     # cursor.execute(""" SELECT * FROM public.users """)
