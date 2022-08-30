@@ -40,8 +40,10 @@ Routes
 
 @app.get("/users")
 async def get_all_users(db: Session = Depends(get_db())):
+
     # cursor.execute(""" SELECT * FROM public.users """)
     # users = cursor.fetchall()
+
     users = db.query(models.User).all()
     if not users:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -51,6 +53,7 @@ async def get_all_users(db: Session = Depends(get_db())):
 
 @app.post("/users", status_code=status.HTTP_201_CREATED)
 def create_user(user: User, db: Session = Depends(get_db())):
+
     # cursor.execute("""INSERT INTO public.users (name) VALUES (%s) RETURNING * """, user.name)
     # new_user = cursor.fetchone()
     # conn.commit()
@@ -64,24 +67,35 @@ def create_user(user: User, db: Session = Depends(get_db())):
 
 
 @app.delete("/users/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(id: int):
-    cursor.execute("""DELETE FROM public.users WHERE id =%s RETURNING *""", (str(id),))
-    deleted_user = cursor.fetchone()
+def delete_user(id: int, db: Session = Depends(get_db())):
+    # cursor.execute("""DELETE FROM public.users WHERE id =%s RETURNING *""", (str(id),))
+    # deleted_user = cursor.fetchone()
 
-    if deleted_user is None:
+    deleted_user = db.query(models.User).filter(models.User.id ==id)
+
+    if deleted_user.first() is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"user with id: {id} does not exist")
+
+    deleted_user.delete(synchronize_session=False)
+    db.commit()
 
     return status.HTTP_204_NO_CONTENT
 
 
 @app.put("users/{id}")
-def update_user(id: int, user: User):
-    cursor.execute("""UPDATE users SET name = %s WHERE id = %s RETURNING *""", (user.name, str(id)))
-    updated_user = cursor.fetchone()
-    conn.commit()
+def update_user(id: int, user: User, db: Session = Depends(get_db())):
+    # cursor.execute("""UPDATE users SET name = %s WHERE id = %s RETURNING *""", (user.name, str(id)))
+    # updated_user = cursor.fetchone()
+    # conn.commit()
 
-    if updated_user is None:
+    updated_user = db.query(models.User).filter(models.User.id == id)
+
+    if updated_user.first() is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} does not exist")
-    return {"data": updated_user}
+
+    updated_user.update(user.dict(), synchronize_session=False)
+    db.commit()
+
+    return {"data": updated_user.first()}
