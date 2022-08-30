@@ -24,8 +24,13 @@ Models
 
 
 class User(BaseModel):
-    id: int = 0
     name: str
+    first_name: str
+    last_name: str
+    password: str
+    user_type: str
+    organization: str
+
 
 
 """
