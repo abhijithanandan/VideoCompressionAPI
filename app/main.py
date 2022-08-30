@@ -9,6 +9,7 @@ from typing import List
 
 from app import models
 from app import schemas
+from app import utils
 from app.database import engine, get_db
 
 """
@@ -18,7 +19,6 @@ Setup
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
 
 """
 Middleware
@@ -58,6 +58,10 @@ def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
     # cursor.execute("""INSERT INTO public.users (name) VALUES (%s) RETURNING * """, user.name)
     # new_user = cursor.fetchone()
     # conn.commit()
+
+    # hash the password
+    hashed_password = utils.hash(user.password)
+    user.password = hashed_password
 
     new_user = models.User(**user.dict())
     db.add(new_user)
