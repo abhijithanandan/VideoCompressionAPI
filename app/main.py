@@ -39,7 +39,7 @@ Routes
 
 
 @app.get("/users")
-async def get_all_users(db: Session = Depends(get_db())):
+async def get_all_users(db: Session = Depends(get_db)):
 
     # cursor.execute(""" SELECT * FROM public.users """)
     # users = cursor.fetchall()
@@ -52,7 +52,7 @@ async def get_all_users(db: Session = Depends(get_db())):
 
 
 @app.post("/users", status_code=status.HTTP_201_CREATED)
-def create_user(user: schemas.CreateUser, db: Session = Depends(get_db())):
+def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
 
     # cursor.execute("""INSERT INTO public.users (name) VALUES (%s) RETURNING * """, user.name)
     # new_user = cursor.fetchone()
@@ -67,7 +67,7 @@ def create_user(user: schemas.CreateUser, db: Session = Depends(get_db())):
 
 
 @app.delete("/users/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(id: int, db: Session = Depends(get_db())):
+def delete_user(id: int, db: Session = Depends(get_db)):
     # cursor.execute("""DELETE FROM public.users WHERE id =%s RETURNING *""", (str(id),))
     # deleted_user = cursor.fetchone()
 
@@ -84,7 +84,7 @@ def delete_user(id: int, db: Session = Depends(get_db())):
 
 
 @app.put("users/{id}")
-def update_user(id: int, user: schemas.UpdateUser, db: Session = Depends(get_db())):
+def update_user(id: int, user: schemas.UpdateUser, db: Session = Depends(get_db)):
     # cursor.execute("""UPDATE users SET name = %s WHERE id = %s RETURNING *""", (user.name, str(id)))
     # updated_user = cursor.fetchone()
     # conn.commit()
