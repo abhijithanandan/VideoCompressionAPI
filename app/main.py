@@ -14,7 +14,7 @@ Models
 
 
 class User(BaseModel):
-    id: int
+    id: int = 0
     name: str
 
 
@@ -47,10 +47,20 @@ async def get_all_users():
     return users
 
 
-@app.post("/create-user", status_code=status.HTTP_201_CREATED)
+@app.post("/users", status_code=status.HTTP_201_CREATED)
 def create_user(user: User):
-    cursor.execute("""INSERT INTO users (name) VALUES (%s) RETURNING * """, user.name)
+    cursor.execute("""INSERT INTO public.users (name) VALUES (%s) RETURNING * """, user.name)
     new_user = cursor.fetchone()
     conn.commit()
 
     return {"data": new_user}
+
+
+@app.delete("/users/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(id: int):
+    cursor.execute("""DELETE FROM public.users WHERE id =%s RETURNING *""", (str(id),))
+    deleted_user = cursor.fetchone()
+
+    if deleted_user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"user with id: {id} does not exist")
