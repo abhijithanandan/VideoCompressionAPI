@@ -55,13 +55,7 @@ def create_user(user: User, db: Session = Depends(get_db())):
     # new_user = cursor.fetchone()
     # conn.commit()
 
-    new_user = models.User(first_name = user.first_name,
-                           last_name=user.last_name,
-                           email = user.email,
-                           password = user.password,
-                           user_type = user.user_type,
-                           organization = user.organization
-                           )
+    new_user = models.User(**user.dict())
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
