@@ -65,6 +65,8 @@ def delete_user(id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"user with id: {id} does not exist")
 
+    return status.HTTP_204_NO_CONTENT
+
 
 @app.put("users/{id}")
 def update_user(id: int, user: User):
