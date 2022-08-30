@@ -48,20 +48,32 @@ Routes
 
 
 @app.get("/users")
-async def get_all_users():
-    cursor.execute(""" SELECT * FROM public.users """)
-    users = cursor.fetchall()
+async def get_all_users(db: Session = Depends(get_db())):
+    # cursor.execute(""" SELECT * FROM public.users """)
+    # users = cursor.fetchall()
+    users = db.query(models.User).all()
     if not users:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"no users found on the system")
-    return users
+    return {"data": users}
 
 
 @app.post("/users", status_code=status.HTTP_201_CREATED)
-def create_user(user: User):
-    cursor.execute("""INSERT INTO public.users (name) VALUES (%s) RETURNING * """, user.name)
-    new_user = cursor.fetchone()
-    conn.commit()
+def create_user(user: User, db: Session = Depends(get_db())):
+    # cursor.execute("""INSERT INTO public.users (name) VALUES (%s) RETURNING * """, user.name)
+    # new_user = cursor.fetchone()
+    # conn.commit()
+
+    new_user = models.User(first_name = user.first_name,
+                           last_name=user.last_name,
+                           email = user.email,
+                           password = user.password,
+                           user_type = user.user_type,
+                           organization = user.organization
+                           )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
 
     return {"data": new_user}
 
