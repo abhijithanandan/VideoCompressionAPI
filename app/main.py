@@ -51,7 +51,7 @@ async def get_all_users(db: Session = Depends(get_db)):
     return {"data": users}
 
 
-@app.post("/users", status_code=status.HTTP_201_CREATED)
+@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
 def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
 
     # cursor.execute("""INSERT INTO public.users (name) VALUES (%s) RETURNING * """, user.name)
@@ -83,7 +83,7 @@ def delete_user(id: int, db: Session = Depends(get_db)):
     return status.HTTP_204_NO_CONTENT
 
 
-@app.put("users/{id}")
+@app.put("users/{id}", response_model=schemas.UserResponse)
 def update_user(id: int, user: schemas.UpdateUser, db: Session = Depends(get_db)):
     # cursor.execute("""UPDATE users SET name = %s WHERE id = %s RETURNING *""", (user.name, str(id)))
     # updated_user = cursor.fetchone()

@@ -20,3 +20,12 @@ class CreateUser(UserBase):
 
 class UpdateUser(UserBase):
     pass
+
+
+class UserResponse(BaseModel):
+    name: str
+    first_name: str
+    last_name: str
+
+    class Config:
+        orm_mode = True
