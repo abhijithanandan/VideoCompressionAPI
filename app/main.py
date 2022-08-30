@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from app import models
 from app.database import engine, get_db
+from app.models import User
 
 """
 Setup
@@ -17,16 +18,6 @@ Setup
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-"""
-Models
-"""
-
-
-class User(BaseModel):
-    id: int = 0
-    name: str
-
 
 """
 Middleware
