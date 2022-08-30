@@ -64,3 +64,16 @@ def delete_user(id: int):
     if deleted_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"user with id: {id} does not exist")
+
+
+@app.put("users/{id}")
+def update_user(id: int, user: User):
+
+    cursor.execute("""UPDATE users SET name = %s WHERE id = %s RETURNING *""", (user.name, str(id)))
+    updated_user = cursor.fetchone()
+    conn.commit()
+
+    if updated_user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"post with id: {id} does not exist")
+    return {"data": updated_user }
