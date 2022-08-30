@@ -2,12 +2,12 @@ import time
 import psycopg2
 
 from fastapi import FastAPI, status, HTTPException
-from pydantic import BaseModel
 from psycopg2.extras import RealDictCursor
 from fastapi.params import Body, Depends
 from sqlalchemy.orm import Session
 
 from app import models
+from app import schemas
 from app.database import engine, get_db
 
 """
@@ -17,20 +17,6 @@ Setup
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-"""
-Models
-"""
-
-
-class User(BaseModel):
-    name: str
-    first_name: str
-    last_name: str
-    password: str
-    user_type: str
-    organization: str
-
 
 
 """
@@ -66,7 +52,7 @@ async def get_all_users(db: Session = Depends(get_db())):
 
 
 @app.post("/users", status_code=status.HTTP_201_CREATED)
-def create_user(user: User, db: Session = Depends(get_db())):
+def create_user(user: schemas.CreateUser, db: Session = Depends(get_db())):
 
     # cursor.execute("""INSERT INTO public.users (name) VALUES (%s) RETURNING * """, user.name)
     # new_user = cursor.fetchone()
@@ -98,7 +84,7 @@ def delete_user(id: int, db: Session = Depends(get_db())):
 
 
 @app.put("users/{id}")
-def update_user(id: int, user: User, db: Session = Depends(get_db())):
+def update_user(id: int, user: schemas.UpdateUser, db: Session = Depends(get_db())):
     # cursor.execute("""UPDATE users SET name = %s WHERE id = %s RETURNING *""", (user.name, str(id)))
     # updated_user = cursor.fetchone()
     # conn.commit()
