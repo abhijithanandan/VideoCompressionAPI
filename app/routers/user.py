@@ -75,4 +75,4 @@ def update_user(id: int, user: schemas.UpdateUser, db: Session = Depends(get_db)
     updated_user.update(user.dict(), synchronize_session=False)
     db.commit()
 
-    return {"data": updated_user.first()}
+    return updated_user.first()
