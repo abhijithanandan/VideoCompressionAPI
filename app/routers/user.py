@@ -13,6 +13,7 @@ router = APIRouter(
     tags=["Users"]
 )
 
+
 @router.get("/", response_model=List[schemas.UserResponse])
 async def get_all_users(db: Session = Depends(get_db)):
     # cursor.execute(""" SELECT * FROM public.users """)
