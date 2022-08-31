@@ -9,7 +9,8 @@ from app import models
 from app.database import get_db
 
 router = APIRouter(
-    prefix="/users"
+    prefix="/users",
+    tags=["Users"]
 )
 
 @router.get("/", response_model=List[schemas.UserResponse])
