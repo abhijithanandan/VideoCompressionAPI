@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from psycopg2.extras import RealDictCursor
 from app import models
 from app.database import engine
-from app.routers import user, video
+from app.routers import user, video, auth
 
 """
 Setup
@@ -34,6 +34,7 @@ Routes
 """
 
 app.include_router(user.router)
+app.include_router(auth.router)
 
 
 @app.get("/")
