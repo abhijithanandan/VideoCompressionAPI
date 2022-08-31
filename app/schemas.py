@@ -8,7 +8,7 @@ Models
 
 
 class UserBase(BaseModel):
-    name: str
+    username: str
     first_name: str
     last_name: str
     password: str
@@ -26,9 +26,9 @@ class UpdateUser(UserBase):
 
 
 class UserResponse(BaseModel):
-    name: str
     first_name: str
     last_name: str
+    email: EmailStr
 
     class Config:
         orm_mode = True

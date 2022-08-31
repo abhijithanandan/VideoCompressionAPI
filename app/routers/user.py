@@ -40,7 +40,7 @@ def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    return {"data": new_user}
+    return new_user
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
