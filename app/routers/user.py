@@ -22,7 +22,7 @@ async def get_all_users(db: Session = Depends(get_db)):
     if not users:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"no users found on the system")
-    return {"data": users}
+    return users
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
