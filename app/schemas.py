@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel, EmailStr
@@ -18,7 +19,6 @@ class UserBase(BaseModel):
 
 class CreateUser(UserBase):
     email: EmailStr
-    pass
 
 
 class UpdateUser(UserBase):
@@ -49,3 +49,18 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str] = None
+
+
+class VideoBase(BaseModel):
+    title: str
+    description: str
+    uri: str
+
+
+class VideoResponse(VideoBase):
+    id: str
+    user_id: str
+    upload_time: datetime
+
+    class Config:
+        orm_mode = True

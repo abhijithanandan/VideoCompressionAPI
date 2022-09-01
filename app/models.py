@@ -26,5 +26,5 @@ class Video(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     title = Column(String, nullable=False)
     description = Column(String, default=f"Video uploaded for compression", nullable=False)
-    url = Column(String, nullable=False)
+    uri = Column(String, nullable=False)
     upload_time = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
