@@ -5,9 +5,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from psycopg2.extras import RealDictCursor
+from app.config import settings
 
 # SQLALCHEMY_DATABASE_URL = 'postgres://<username>:<password>@<ip-address/hostname>/<database-name>'
-SQLALCHEMY_DATABASE_URL = 'postgres://postgres:postgres@localhost/VCApi'
+
+SQLALCHEMY_DATABASE_URL = f'postgres://{settings.database_username}:{settings.database_password}@' \
+                          f'{settings.database_hostname}:{settings.database_port}/' \
+                          f'{settings.database_name}'
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
