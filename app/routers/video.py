@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 from starlette import status
@@ -9,9 +11,13 @@ router = APIRouter()
 
 
 @router.get("/videos")
-def get_all_videos(db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
-    videos = db.query(models.Video).filter(models.Video.user_id == current_user.id).all()
-    return {"data": videos}
+def get_all_videos(db: Session = Depends(get_db),
+                   current_user: models.User = Depends(oauth2.get_current_user),
+                   limit: int = 10,
+                   skip: int = 0,
+                   search: Optional[str] = ""):
+    videos = db.query(models.Video).filter(models.Video.user_id == current_user.id, models.Video.title.contains(search)).limit(limit).offset(skip).all()
+    return videos
 
 
 @router.post("/videos", response_model=schemas.VideoResponse)
