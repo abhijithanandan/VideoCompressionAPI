@@ -11,7 +11,7 @@ class User(Base):
     username = Column(String, nullable=False)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
-    email = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
     user_type = Column(String, nullable=False)
     organization = Column(String, nullable=False)
