@@ -16,7 +16,6 @@ class User(Base):
     user_type = Column(String, nullable=False)
     organization = Column(String, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
-    videos = relationship("Video")
 
 
 class Video(Base):
