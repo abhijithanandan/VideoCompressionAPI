@@ -9,7 +9,7 @@ from app.config import settings
 
 # SQLALCHEMY_DATABASE_URL = 'postgres://<username>:<password>@<ip-address/hostname>/<database-name>'
 
-SQLALCHEMY_DATABASE_URL = f'postgres://{settings.database_username}:{settings.database_password}@' \
+SQLALCHEMY_DATABASE_URL = f'postgresql://{settings.database_username}:{settings.database_password}@' \
                           f'{settings.database_hostname}:{settings.database_port}/' \
                           f'{settings.database_name}'
 
