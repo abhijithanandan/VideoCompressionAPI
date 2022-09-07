@@ -10,15 +10,24 @@ def test_root(client):
 
 def test_create_user(client):
     result = client.post("/users/", json={
-            "username": "abhijith",
-            "first_name": "abhijith",
-            "last_name": "ananadan",
-            "password": "password123",
-            "user_type": "administrator",
-            "organization": "VCApi Org",
-            "email": "abhi@vcapi.com"
+        "username": "abhijith",
+        "first_name": "abhijith",
+        "last_name": "ananadan",
+        "password": "password123",
+        "user_type": "administrator",
+        "organization": "VCApi Org",
+        "email": "abhi@vcapi.com"
     })
 
     new_user = schemas.UserResponse(**result.json())
     assert new_user.email == "abhi@vcapi.com"
     assert result.status_code == 201
+
+
+def test_user_login(client):
+    result = client.post("/login", data={
+        "username": "abhi@vcapi.com",
+        "password": "password123",
+    })
+
+    assert result.status_code == 200
