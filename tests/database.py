@@ -7,6 +7,8 @@ from sqlalchemy.orm import sessionmaker
 from app.config import settings
 from app.database import get_db
 from app.main import app
+from app.database import Base
+from alembic import command
 
 '''
 Setup Test Database
@@ -20,11 +22,10 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
-
 
 @pytest.fixture
 def session():
+    # command.upgrade("head")
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     db = TestingSessionLocal()
