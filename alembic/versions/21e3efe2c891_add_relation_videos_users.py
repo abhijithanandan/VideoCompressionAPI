@@ -23,5 +23,5 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_constraint('video_user_fk')
+    op.drop_constraint('video_user_fk', 'videos')
     op.drop_column('videos', 'user_id')
