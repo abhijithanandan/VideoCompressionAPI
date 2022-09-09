@@ -22,8 +22,10 @@ def upgrade() -> None:
                     sa.Column('description', sa.String, default=f"Video uploaded for compression", nullable=False),
                     sa.Column('uri', sa.String, nullable=False),
                     sa.Column('upload_time', sa.TIMESTAMP(timezone=True), nullable=False,
-                              server_default=sa.text('now()'))
-                    )
+                              server_default=sa.text('now()')
+                              ),
+                    sa.Column('name', sa.String, nullable=False),
+                    sa.Column('hash_name', sa.String, nullable=False))
 
 
 def downgrade() -> None:
