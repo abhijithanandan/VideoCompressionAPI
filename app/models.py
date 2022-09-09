@@ -27,3 +27,5 @@ class Video(Base):
     description = Column(String, default=f"Video uploaded for compression", nullable=False)
     uri = Column(String, nullable=False)
     upload_time = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    name = Column(String, nullable=False)
+    hash_name = Column(String, nullable=False)

@@ -55,12 +55,16 @@ class VideoBase(BaseModel):
     title: str
     description: str
     uri: str
+    name: str
+    hash_name: str
 
 
 class VideoResponse(VideoBase):
     id: str
     user_id: str
     upload_time: datetime
+    name: str
+    hash_name: str
 
     class Config:
         orm_mode = True
