@@ -1,4 +1,5 @@
 import shutil
+import uuid
 from typing import Optional
 from pathlib import Path
 
@@ -31,7 +32,8 @@ def upload_new_video(
         file_uploaded: UploadFile = File(),
         db: Session = Depends(get_db),
         current_user: models.User = Depends(oauth2.get_current_user)):
-    destination = Path("temp_video_storage/" + str(file_uploaded.__hash__()) + "_" + file_uploaded.filename + ".mp4")
+    fid = uuid.uuid4()
+    destination = Path("temp_video_storage/" + fid + "_" + file_uploaded.filename)
     new_video_meta = models.Video(user_id=current_user.id, **{
         "title": title,
         "description": description,
